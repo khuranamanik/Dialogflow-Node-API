@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const intentDetect= require('./routes/detectIntent.js')
 router.use(bodyParser());
-const port = 3002;
+const port = 3000;
 
 function ensureToken(req, res, next) {
     const bearerHeader = req.headers["authorization"];
