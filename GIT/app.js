@@ -9,7 +9,9 @@ const passportJWT = require('passport-jwt');
 let ExtractJwt = passportJWT.ExtractJwt;
 let JwtStrategy = passportJWT.Strategy;
 let jwtOptions = {};
+const {Agent} = require('./APIDB/sequelize.js')
 const {Admin} = require('./APIDB/sequelize.js')
+const Intents = require('./APIDB/sequelize.js')
 const intentCreate = require('./routes/Intent/createIntent.js')
 const intentDelete = require('./routes/Intent/deleteIntent.js')
 const entityTypeCreate = require('./routes/Entity/createEntityType.js')
@@ -22,6 +24,12 @@ const getKB= require('./routes/KnowledgeBase/getKB.js')
 const getAgent= require('./routes/Agent/getAgent.js')
 const trainAgent= require('./routes/Agent/trainAgent.js')
 router.use(bodyParser());
+router.use(function(req,res,next)
+{
+res.header("Access-Control-Allow-Origin","*");
+res.header("Access-Control-Allow-Headers", "Origin,X-requested-With,Content-Type,Authorization,Accept");
+next();
+})
 
 
 const getUser = async obj => {
@@ -73,6 +81,12 @@ router.get('/protected', passport.authenticate('jwt', { session: false }), funct
   res.json('Success! You can now see this without a token.');
 });
 
+router.post('/api/Agentcreate',(req,res)=>{
+  Agent.create(req.body)
+  .then(result=>res.json(result));
+
+})
+
 router.post('/api/create',(req,res)=>{
   Admin.create(req.body)
   .then(result=>res.json(result));
@@ -119,6 +133,14 @@ function ensureToken(req, res, next) {
   }
 }
 
+function Create(req, res, next) {
+  Intents.create(req.body)
+  .then(result=>res.json(result));
+
+}
+
+
+
 
 
 router.options('*', cors(corsOptionsDelegate))
@@ -140,7 +162,7 @@ res.header("Access-Control-Allow-Headers", "Origin,X-requested-With,Content-Type
 next();
 })
 
-app.post('/firstmesage', auth, function(req,res) {
+app.post('/firstmessage', auth, function(req,res) {
   res.send('Hello');
 })
 

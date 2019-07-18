@@ -1,34 +1,38 @@
 module.exports = (sequelize, type) => {
-    return sequelize.define('Intent', {
-        IntentId: {
+    return sequelize.define('Context', {
+        ContextId: {
           type: type.INTEGER,
-         primaryKey: true,
+          primaryKey: true,
           unique:true
 
         },
+
+        SessionId: {
+            type: type.UUID,
+            unique:true,
+            primaryKey:false
+          },
+
         ProjectId: {
           type: type.STRING,
+          primaryKey: false,
           autoIncrement: false,
-          primaryKey:false,
           unique: true,
           foreignKey: true,
           references:{
             model:'Agents',
             Key:'ProjectId'
-          }
+          },
         
         },
         displayName:{
           type : type.STRING
         },
         
-        // TrainingPharsesParts: {
-        //   type : type.ARRAY(type.STRING)
-        // },
-
-        MessageTexts:{
-            type : type.STRING
-          }
+        LifespanCount: {
+        type:type.INTEGER
+        }
     })
 
 }
+

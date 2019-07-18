@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { Agent, Intents, Entities, Context, KnowledgeBase, Document, DetectIntent} = require('./sequelize')
+const { Agent, Intents, Entities, Context, KnowledgeBase, Document} = require('./sequelize.js')
 
 const app = express()
 app.use(bodyParser.json())
@@ -60,6 +60,12 @@ app.post('/api/KnowledgeBase', (req, res) => {
 app.get('/api/KnowledgeBase', (req, res) => {
     KnowledgeBase.findAll().then(users => res.json(users))
 })
+
+// app.post('/api/create',(req,res)=>{
+//     Admin.create(req.body)
+//     .then(result=>res.json(result));
+  
+//   })
 const port = 3000
 app.listen(port, () => {
     console.log(`Running on http://localhost:${port}`)
