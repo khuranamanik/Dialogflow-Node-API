@@ -1,18 +1,10 @@
-// const express = require('express');
-// const router = express.Router();
-// const app = express();
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-//const path = require('path');
-//router.use(bodyParser());
-const credentials = require ('Your credential file');
+
+const credentials = require ('../../Cred');
 const express = require('express');
 const router = express.Router();  
 const bodyParser = require('body-parser')
 const {Intent} = require('../../APIDB/sequelize');
 
-// /home/arpan/APIDialogflow/POC/APIDB/sequelize.js
-//const routes = require('/home/arpan/Dialog/dserver/controller.js')
 async function createIntent(req,res)
 {
   // [START dialogflow_create_intent]
@@ -21,17 +13,13 @@ async function createIntent(req,res)
   text = req.body.displayName;
   let displayName;
   // Instantiates the Intent Client
-  const intentsClient = new dialogflow.IntentsClient(credentials);
+  const intentsClient = new dialogflow.IntentsClient(credentials.config);
 
   // The path to identify the agent that owns the created intent.
-  const agentPath = intentsClient.projectAgentPath(projectId);
+  const agentPath = intentsClient.projectAgentPath(credentials.project_id);
 
   const intent = {
     displayName:`${text}`
-      
-
-    //trainingPhrases: trainingPhrases,
-    //messages: [message],
   };
 
   const createIntentRequest = {
@@ -45,10 +33,10 @@ async function createIntent(req,res)
   
   const response = responses[0].name;
   const seperate = response.split ('/');
-  const newOject={"IntentId": seperate[4],"ProjectId":seperate[1],"displayName":req.body.displayName};
+  const newOject={"intentId": seperate[4],"projectId":seperate[1],"displayName":req.body.displayName};
   console.log(newOject);
     Intent.create(newOject)
-        .then(Intent => "")
+        .then(response => "")
 
 const responsetouser = responses[0].name;
 let respData = {

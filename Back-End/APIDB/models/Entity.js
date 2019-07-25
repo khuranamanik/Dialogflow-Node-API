@@ -1,56 +1,67 @@
 module.exports = (sequelize, type) => {
     return sequelize.define('Entity', {
-        EntityTypeId: {
-          type: type.INTEGER,
+        entityId: {
+          type: type.UUID,
           primaryKey: true,
           unique:true
 
         },
-        EntityTypeId:{
-            type : type.INTEGER
-          },
+        // EntityTypeId:{
+        //     type : type.INTEGER
+        //   },
 
-        EntityValue:{
+        entityValue:{
             type : type.STRING //ARRAY?
         },
 
         // Synonyms: {
         //     type : type.ARRAY(type.STRING)
         //   },
-
-        ProjectId: {
+        entityTypeId: {
+          type: type.UUID,
+          primaryKey: false,
+          autoIncrement: false,
+          unique: false,
+          foreignKey: true,
+          references:{
+            model:'EntityTypes',
+            Key:'entityTypeId'
+          },
+        
+        },
+        projectId: {
           type: type.STRING,
           primaryKey: false,
           autoIncrement: false,
-          unique: true,
+          unique: false,
           foreignKey: true,
           references:{
             model:'Agents',
-            Key:'ProjectId'
+            Key:'projectId'
           },
         
         },
-        displayName:{
-          type : type.STRING
-        },
+        // displayName:{
+        //   type : type.STRING
+        // },
         
-        Kind:{
-            type : type.STRING
-          },
+        // Kind:{
+        //     type : type.STRING
+        //   },
 
-          SessionId: {
-            type: type.UUID,
-            unique:true
+          // SessionId: {
+          //   type: type.UUID,
+          //   unique:true
   
-          },
+          // },
 
-        EntityTypeDisplayName:{
-            type : type.STRING
-        },
+        // EntityTypeDisplayName:{
+        //     type : type.STRING
+        // },
         
-        EntityOverrideMode:{
-            type : type.BOOLEAN
-        },
+        // EntityOverrideMode:{
+        //     type : type.BOOLEAN
+        // },
     })
 
 }

@@ -2,15 +2,22 @@
 const express = require('express');
 const router = express.Router();
 const dialogflow = require('dialogflow').v2beta1;
-
+const {Agent} = require('../../APIDB/sequelize');
 const googleapi = require('googleapis');
-const credentials = require('/home/arpan/Dialog/Cred.js');
+const credentials = require('../../Cred');
 async function runSample(req,res) {
-    
-const agentClient = new dialogflow.AgentsClient(credentials);
-const projectPath = agentClient.projectPath(projectId);
+  Agent.findAll ({
+    where : {
+      
+      projectId : credentials.project_id
+    },
+    raw:true
+
+  }).then(async function(results) {
+const agentClient = new dialogflow.AgentsClient(credentials.config);
+const projectPath = agentClient.projectPath(credentials.project_id);
 const agent = {   
-    displayName: 'arpan',
+    displayName: results[0].displayName,
     languageCode : 'en-US',   
 };
 const trainAgentRequest = {
@@ -26,8 +33,8 @@ const responsetouser = responses;
     data: responsetouser
   };
   res.send(respData);
+})
 }
-
 module.exports = {
  runSample : runSample 
  }

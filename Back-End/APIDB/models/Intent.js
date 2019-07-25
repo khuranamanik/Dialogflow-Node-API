@@ -1,12 +1,12 @@
 module.exports = (sequelize, type) => {
     return sequelize.define('Intent', {
-        IntentId: {
+        intentId: {
           type: type.UUID,
           primaryKey: true,
           unique:true
 
         },
-        ProjectId: {
+        projectId: {
           type: type.STRING,
           autoIncrement: false,
           primaryKey:false,
@@ -14,7 +14,7 @@ module.exports = (sequelize, type) => {
           foreignKey: true,
           references:{
             model:'Agents',
-            Key:'ProjectId'
+            Key:'projectId'
           }
         
         },

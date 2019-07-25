@@ -1,37 +1,37 @@
 module.exports = (sequelize, type) => {
     return sequelize.define('Document', {
-        DocumentId: {
-          type: type.INTEGER,
+        documentId: {
+          type: type.UUID,
           primaryKey: true,
           unique:true
         },
-        KnowledgeBaseId: {
-          type: type.INTEGER,
+        knowledgeBaseId: {
+          type: type.UUID,
           primaryKey: false,
           autoIncrement: false,
-          unique: true,
+          unique: false,
           foreignKey: true,
           references:{
           model:'KnowledgeBases',
-          Key:'KnowledgeBaseId'
+          Key:'knowledgeBaseId'
           }
         },
 
         
-        DisplayName:{
+        displayName:{
           type : type.STRING
         },
         
-        DocumnetName: {
+        documnetName: {
           type : type.STRING
         },
-        DocumnetPath: {
+        documnetPath: {
             type : type.STRING
         },
-        KnowledgeTypes: {
+        knowledgeTypes: {
             type : type.STRING
         },
-        MimeType: {
+        mimeType: {
             type : type.STRING
         },
       })

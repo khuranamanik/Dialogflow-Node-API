@@ -1,22 +1,22 @@
 module.exports = (sequelize, type) => {
     return sequelize.define('KnowledgeBase', {
-        KnowledgeBaseId: {
-          type: type.INTEGER,
+        knowledgeBaseId: {
+          type: type.UUID,
           primaryKey: true,
           unique:true
         },
         
         
 
-        ProjectId: {
+        projectId: {
           type: type.STRING,
           primaryKey: false,
           autoIncrement: false,
-          unique: true,
+          unique: false,
           foreignKey: true,
           references:{
             model:'Agents',
-            Key:'ProjectId'
+            Key:'projectId'
           },
         
         },
@@ -24,7 +24,7 @@ module.exports = (sequelize, type) => {
           type : type.STRING
         },
 
-        KnowledgeBaseFullName: {
+        knowledgeBaseFullName: {
           type : type.STRING,
         },
         

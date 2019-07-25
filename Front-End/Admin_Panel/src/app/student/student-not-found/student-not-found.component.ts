@@ -34,15 +34,17 @@ export class StudentNotFoundComponent implements OnInit {
       email: [''],
       password: [''],
       roletype: [''],
-      projectId: [''],
+      ProjectId: [''],
       displayName: ['']
     });
   }
-
   get f() {
     return this.createAgent.controls;
   }
   createAdmin() {
+    
+
+    // {...this.createAgent.value, ProjectId: this.createAgent.value.projectId}
     this.studentService.createAdmin(this.createAgent.value)
       .subscribe(res => {
         this.data = res

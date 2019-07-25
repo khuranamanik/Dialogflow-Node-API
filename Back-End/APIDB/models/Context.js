@@ -1,27 +1,27 @@
 module.exports = (sequelize, type) => {
     return sequelize.define('Context', {
-        ContextId: {
+        contextId: {
           type: type.INTEGER,
           primaryKey: true,
           unique:true
 
         },
 
-        SessionId: {
+        sessionId: {
             type: type.UUID,
             unique:true,
             primaryKey:false
           },
 
-        ProjectId: {
+        projectId: {
           type: type.STRING,
           primaryKey: false,
           autoIncrement: false,
-          unique: true,
+          unique: false,
           foreignKey: true,
           references:{
             model:'Agents',
-            Key:'ProjectId'
+            Key:'projectId'
           },
         
         },
@@ -29,7 +29,7 @@ module.exports = (sequelize, type) => {
           type : type.STRING
         },
         
-        LifespanCount: {
+        lifespanCount: {
         type:type.INTEGER
         }
     })
