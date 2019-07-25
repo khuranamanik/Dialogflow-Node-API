@@ -36,7 +36,7 @@ const userAction = async () => {
     //     .catch(err=> console.log(err))
 
       var response = await fetch(gatewayUrl, {
-        method: "POST",
+        method: "GET",
           // mode: 'no-cors',
         body: jsondata,
         headers: {

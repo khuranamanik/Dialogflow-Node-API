@@ -28,10 +28,14 @@ router.use(bodyParser());
 router.use(function(req,res,next)
 {
 res.header("Access-Control-Allow-Origin","*");
-res.header("Access-Control-Allow-Headers", "Origin,X-requested-With,Content-Type,Authorization,Accept");
+res.header("Access-Control-Allow-Headers", "*");
+res.header("Access-Control-Expose-Headers", "token");
 next();
 })
-
+var corsOptionsDelegate = function (req, callback) {
+  var corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+  callback(null, corsOptions); // callback expects two parameters: error and options
+}
 
 const getUser = async obj => {
   return await Agent.findOne({
@@ -101,13 +105,30 @@ function auth(req, res, next) {
   const user = { id: 73673930709 };
       const token = jwt.sign({ user: user.id }, 'my secret key');{
       // if (typeof token !== 'undefined') {
-          res.header({
-              token: token,
-          })
-          next();
-  
+        res.header("token",token);
+        next();  
       }
   }
+  function ensureToken(req, res, next) {
+    const bearerHeader = req.headers["authorization"];
+    if (typeof bearerHeader !== 'undefined') {
+      const bearer = bearerHeader.split(" ");
+      const bearerToken = bearer[1];
+      req.token = bearerToken;
+      jwt.verify(req.token, 'my secret key', function(err, data) {
+        if (err) {
+          res.sendStatus(403);
+        } else {
+        next();
+        }  
+    })
+      }
+    
+    else {
+      res.sendStatus(400);
+    }
+  }
+  
 
 // protected route
 router.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
@@ -126,27 +147,18 @@ router.post('/api/create',(req,res)=>{
 
 })
 
-var corsOptionsDelegate = function (req, callback) {
-  var corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
-  callback(null, corsOptions); // callback expects two parameters: error and options
-}
-
 function Create(req, res, next) {
   Intents.create(req.body)
   .then(result=>res.json(result));
 
 }
 
-
-
-
-
 router.options('*', cors(corsOptionsDelegate))
 router.post('/createIntent', cors(corsOptionsDelegate), verifyToken,intentCreate.createIntent); //Write like this one to add functionalities
 router.post('/deleteIntent', cors(corsOptionsDelegate), verifyToken, intentDelete.deleteIntent);
 router.post('/createEntityType', cors(corsOptionsDelegate),verifyToken, entityTypeCreate.runSample);
 router.post('/createEntity', cors(corsOptionsDelegate), verifyToken, entityCreate.runSample);
-router.get('/detectIntent', cors(corsOptionsDelegate), verifyToken, intentDetect.runSample);
+router.post('/detectIntent', cors(corsOptionsDelegate), ensureToken,intentDetect.runSample);
 router.get('/detectTextIntent', cors(corsOptionsDelegate), intentTextDetect.detectTextIntent);
 router.get('/listIntent', cors(corsOptionsDelegate), verifyToken, intentList.listIntents);
 router.post('/createKB', cors(corsOptionsDelegate), verifyToken, createKB.createKnowledgeBase);
@@ -154,15 +166,9 @@ router.post('/deleteKB', cors(corsOptionsDelegate), verifyToken, deleteKB.delete
 router.get('/getKB', cors(corsOptionsDelegate), verifyToken, getKB.getKnowledgeBase);
 router.get('/getAgent', cors(corsOptionsDelegate), verifyToken, getAgent.runSample);
 router.post('/trainagent',cors(corsOptionsDelegate), verifyToken, trainAgent.runSample);
-router.use(function(req,res,next)
-{
-res.header("Access-Control-Allow-Origin","*");
-res.header("Access-Control-Allow-Headers", "Origin,X-requested-With,Content-Type,Authorization,Accept");
-next();
-})
-
-app.post('/firstmessage', auth, function(req,res) {
-  res.send('Hello');
+router.post('/firstmessage',cors(corsOptionsDelegate), auth, function(req,res) {
+  const response = JSON.stringify({message:"Hello"});
+  res.send(response);
 })
 
 const port = 3000
