@@ -10,7 +10,7 @@ const AdminModel = require('./models/admins');
 
 
 //check username and password 
-const sequelize = new Sequelize('DatabaseName', 'user', 'password', { 
+const sequelize = new Sequelize('DialogflowDB', 'root', 'arpan', { 
   host: 'localhost',
   dialect: 'mysql',
   pool: {

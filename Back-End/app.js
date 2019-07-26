@@ -42,6 +42,7 @@ const getUser = async obj => {
     where: obj
   });
 };
+    
 
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = 'my secret token';
@@ -72,7 +73,7 @@ router.post('/login', async function(req, res, next) {
     if (user.password === password) {
       // from now on we'll identify the user by the id and the id is the 
       // only personalized value that goes into our token
-      let payload = { id: user.id , projectID: user.projectId};
+      let payload = { id: user.id , project_id: user.projectId};
       let token = jwt.sign(payload, jwtOptions.secretOrKey);
       res.json({ msg: 'ok', token: token ,user:user});
     } else {
@@ -83,7 +84,8 @@ router.post('/login', async function(req, res, next) {
 
 
 function verifyToken(req, res, next) {
-  const bearerHeader = req.headers["authorization"];
+  console.log("req=>" + req.headers["token"]);
+  const bearerHeader = req.headers["token"];
   if (typeof bearerHeader !== 'undefined') {
     const bearer = bearerHeader.split(" ");
     const bearerToken = bearer[1];
@@ -135,7 +137,7 @@ router.get('/protected', passport.authenticate('jwt', { session: false }), funct
   res.json('Success! You can now see this without a token.');
 });
 
-router.post('/api/Agentcreate',verifyToken,(req,res)=>{
+router.post('/api/Agentcreate',(req,res)=>{
   Agent.create(req.body)
   .then(result=>res.json(result));
 
