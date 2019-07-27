@@ -1,38 +1,44 @@
 
-const credentials = require ('../../Cred');
+// const credentials = require ('../../Cred');
 const express = require('express');
 const router = express.Router();  
 const bodyParser = require('body-parser')
 const {Intent} = require('../../APIDB/sequelize');
+const {Agent} = require('../../APIDB/sequelize');
 const jwt_Decode = require('jwt-decode');
-
+// var config;
 async function createIntent(req,res)
 {
   // [START dialogflow_create_intent]
   // Imports the Dialogflow library
-  // var ca = req.token;
-  // var base64Url = ca.split('.')[1];
-  // var decodedValue = JSON.parse(window.atob(base64Url));
-  // console.log(decodedValue);
-  // console.log("My token is",req.token);
-  // console.log("my request is",req);
   const token = req.token;
   const decoded = jwt_Decode(token);
-
-  //const projectId = decoded.split (',');
   const projectId = decoded.project_id;
-  // console.log("my req.config is============-------=====>",req.config);
-  // console.log("My project Id is",projectId);
-  // console.log("Direct is",decoded.project_id);
 
+
+  Agent.findAll ({
+    where : {
+      
+      projectId : decoded.project_id
+    },
+    raw:true
+
+  }).then(async function(results) {
+   
+    const config = {
+     credentials: {
+    private_key: results[0].private_key,
+    client_email: results[0].client_email
+     }
+    }
   const dialogflow = require('dialogflow');
   text = req.body.displayName;
   let displayName;
   // Instantiates the Intent Client
-  const intentsClient = new dialogflow.IntentsClient(credentials.config);
+  const intentsClient = new dialogflow.IntentsClient(config);
 
   // The path to identify the agent that owns the created intent.
-  const agentPath = intentsClient.projectAgentPath(credentials.project_id);
+  const agentPath = intentsClient.projectAgentPath(decoded.project_id);
 
   const intent = {
     displayName:`${text}`
@@ -50,7 +56,7 @@ async function createIntent(req,res)
   const response = responses[0].name;
   const seperate = response.split ('/');
   const newOject={"intentId": seperate[4],"projectId":seperate[1],"displayName":req.body.displayName};
-  console.log(newOject);
+  // console.log(newOject);
     Intent.create(newOject)
         .then(response => "")
 
@@ -59,8 +65,9 @@ let respData = {
     data: responsetouser
   };
   res.send(respData);
+})
 }
-   
+  
 module.exports={
   createIntent : createIntent
 }
