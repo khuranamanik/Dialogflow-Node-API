@@ -7,9 +7,9 @@ async function runSample (req,res) {
 const dialogflow = require('dialogflow');
 const uuid = require('uuid');
 let text = req.body.text; 
-
-console.log(credentials.config);
-console.log(credentials.project_id)
+console.log("My token is",req.token);
+// console.log(credentials.config);
+// console.log(credentials.project_id)
 //console.log(config);
 const sessionId = uuid.v4();
 // Create a new session

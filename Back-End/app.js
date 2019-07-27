@@ -24,6 +24,8 @@ const deleteKB= require('./routes/KnowledgeBase/deleteKB.js')
 const getKB= require('./routes/KnowledgeBase/getKB.js')
 const getAgent= require('./routes/Agent/getAgent.js')
 const trainAgent= require('./routes/Agent/trainAgent.js')
+const jwt_Decode = require('jwt-decode');
+var mytoken = {}
 router.use(bodyParser());
 router.use(function(req,res,next)
 {
@@ -38,16 +40,22 @@ var corsOptionsDelegate = function (req, callback) {
 }
 
 const getUser = async obj => {
-  return await Agent.findOne({
+  const agent= await Agent.findOne({
     where: obj
   });
+  if(agent){
+    return agent;
+  }else{
+    return await Admin.findOne({
+      where: obj
+    });
+  }
 };
-    
 
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = 'my secret token';
 
-// lets create our strategy for web token
+//lets create our strategy for web token
 let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 console.log('payload received', jwt_payload);
 let user = getUser({ id: jwt_payload.id });
@@ -85,6 +93,7 @@ router.post('/login', async function(req, res, next) {
 
 function verifyToken(req, res, next) {
   console.log("req=>" + req.headers["token"]);
+  mytoken = req.headers["token"];
   const bearerHeader = req.headers["token"];
   if (typeof bearerHeader !== 'undefined') {
     const bearer = bearerHeader.split(" ");
@@ -103,8 +112,10 @@ function verifyToken(req, res, next) {
     res.sendStatus(400);
   }
 }
+
 function auth(req, res, next) {
   const user = { id: 73673930709 };
+
       const token = jwt.sign({ user: user.id }, 'my secret key');{
       // if (typeof token !== 'undefined') {
         res.header("token",token);
@@ -123,15 +134,47 @@ function auth(req, res, next) {
         } else {
         next();
         }  
-    })
+    }) 
       }
     
     else {
       res.sendStatus(400);
     }
   }
-  
 
+
+// function to extract client_email and private_key from database.
+  function property(req, res, next) {
+    const decoded = jwt_Decode(mytoken);
+    console.log("function property contains===========>",decoded);
+    const projectId = decoded.project_id;
+    
+    Agent.findAll ({
+      where : {
+        
+        projectId : projectId
+      },
+    raw : true
+    }).then(async function(results, err) {
+      console.log("My results are",results);
+
+      var config = {
+                private_key: results[0].private_key,
+                client_email: results[0].client_email
+      }
+        if(err){
+          res.sendStatus(403);
+        }else{
+          next();
+        }
+      
+      });
+  }
+      
+
+
+
+ 
 // protected route
 router.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
   res.json('Success! You can now see this without a token.');
@@ -156,11 +199,11 @@ function Create(req, res, next) {
 }
 
 router.options('*', cors(corsOptionsDelegate))
-router.post('/createIntent', cors(corsOptionsDelegate), verifyToken,intentCreate.createIntent); //Write like this one to add functionalities
+router.post('/createIntent', cors(corsOptionsDelegate), verifyToken, property, intentCreate.createIntent); //Write like this one to add functionalities
 router.post('/deleteIntent', cors(corsOptionsDelegate), verifyToken, intentDelete.deleteIntent);
 router.post('/createEntityType', cors(corsOptionsDelegate),verifyToken, entityTypeCreate.runSample);
 router.post('/createEntity', cors(corsOptionsDelegate), verifyToken, entityCreate.runSample);
-router.post('/detectIntent', cors(corsOptionsDelegate), ensureToken,intentDetect.runSample);
+router.get('/detectIntent', cors(corsOptionsDelegate), ensureToken,intentDetect.runSample);
 router.get('/detectTextIntent', cors(corsOptionsDelegate), intentTextDetect.detectTextIntent);
 router.get('/listIntent', cors(corsOptionsDelegate), verifyToken, intentList.listIntents);
 router.post('/createKB', cors(corsOptionsDelegate), verifyToken, createKB.createKnowledgeBase);
