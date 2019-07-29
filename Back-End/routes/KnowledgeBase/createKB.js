@@ -1,14 +1,14 @@
-const express = require('express')
-const router  = express.Router()
-const sessionId = require('uuid/v1')();
-const util = require('util');
-const credentials = require ('../../Cred');
+// const express = require('express')
+// const router  = express.Router()
+// const sessionId = require('uuid/v1')();
+// const util = require('util');
+// const credentials = require ('../../Cred');
 const {KnowledgeBase} = require('../../APIDB/sequelize');
 async function createKnowledgeBase(req,res) {
   const dialogflow = require('dialogflow').v2beta1;
-  const client = new dialogflow.KnowledgeBasesClient(credentials.config);
+  const client = new dialogflow.KnowledgeBasesClient(req.userData.dialogFlowCred);
    displayName = req.body.displayName;
-  const formattedParent = client.projectPath(credentials.project_id);
+  const formattedParent = client.projectPath(req.userData.project_id);
   const knowledgeBase = {
     displayName: displayName,
   };

@@ -29,6 +29,10 @@ const Context = ContextModel(sequelize, Sequelize)
 const KnowledgeBase = KnowledgeBaseModel(sequelize, Sequelize)
 const Document = DocumentModel(sequelize, Sequelize)
 const Admin = AdminModel(sequelize,Sequelize);
+
+Admin.hasMany(Agent)
+
+
 Agent.hasMany(Intent, {
     foreignKey: {
       name: 'projectId',

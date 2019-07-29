@@ -3,8 +3,6 @@ module.exports = (sequelize, type) => {
       projectId: {
         type: type.STRING,
         primaryKey: true,
-        autoIncrement: false,
-        unique: true
       },
         
         displayName:{

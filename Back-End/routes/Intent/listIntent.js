@@ -1,15 +1,15 @@
-const express = require('express');
-const credentials = require ('../../Cred');
-const router  = express.Router();
+// const express = require('express');
+// const credentials = require ('../../Cred');
+// const router  = express.Router();
 async function listIntents(req,res) {
     // [START dialogflow_list_intents]
     // Imports the Dialogflow library
     const dialogflow = require('dialogflow');
     // Instantiates clients
-    const intentsClient = new dialogflow.IntentsClient(credentials.config);
+    const intentsClient = new dialogflow.IntentsClient(req.userData.dialogFlowCred);
   
     // The path to identify the agent that owns the intents.
-    const projectAgentPath = intentsClient.projectAgentPath(credentials.project_id);
+    const projectAgentPath = intentsClient.projectAgentPath(req.userData.project_id);
       const request = {
       parent: projectAgentPath,
     	};

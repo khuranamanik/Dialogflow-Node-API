@@ -6,7 +6,7 @@ const credentials = require ('../../Cred');
 const {Entity} = require('../../APIDB/sequelize');
 const {EntityType} = require('../../APIDB/sequelize');
 //runSample is the function to detect intent
-async function runSample(req,res) {
+async function createEntity(req,res) {
   
 const dialogflow = require('dialogflow');
 const uuid = require('uuid');
@@ -30,10 +30,10 @@ const sessionId = uuid.v4();
 //include the above in all apis
 
   // Instantiates clients
-  const entityTypesClient = new dialogflow.EntityTypesClient(credentials.config);
+  const entityTypesClient = new dialogflow.EntityTypesClient(req.userData.dialogFlowCred);
 
   // The path to the agent the created entity belongs to.
-  const agentPath = entityTypesClient.entityTypePath(credentials.project_id, entityTypeId);
+  const agentPath = entityTypesClient.entityTypePath(req.userData.project_id, entityTypeId);
 
   const entity = {
     value: entityValue,
@@ -45,20 +45,24 @@ const sessionId = uuid.v4();
     entities: [entity],
   };
 
-  const [response] = await entityTypesClient.batchCreateEntities(
-    createEntitiesRequest
-  );// Create a new session
+  const response = await entityTypesClient.batchCreateEntities(createEntitiesRequest);
+  // Create a new session
   console.log('Created entity type:');
-  console.log(response);
+    console.log("?>>>>>>>>");
+    console.log(response);
+    console.log("?>>>>>>>>");
+    console.log("My name is",response[0].latestResponse.name);
+
  
-    const responses = response[0].name;
-    const separate = responses.split ('/');
-    const newObject = {'EntityId': separate[4],"projectId":seperate[1],"entityTypeName":responses[0].displayName,"kind":responses[0].kind};
+    const responses = response[0].latestResponse.name;
+    const seperate = responses.split ('/');
+    console.log(responses.split ('/')[3]);
+    const newObject = {"entityId": seperate[3],"projectId":seperate[1],"entityTypeId":results[0].entityTypeId,"entityTypeName":responses[0].displayName,"Kind":responses[0].kind};
     Entity.create(newObject);
   })
 }  
 
 module.exports = {
-    runSample: runSample
+  createEntity: createEntity
     };
     

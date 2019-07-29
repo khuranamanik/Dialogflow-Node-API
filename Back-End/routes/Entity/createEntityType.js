@@ -1,18 +1,18 @@
-const express = require('express');
-const router = express.Router();
-const credentials = require ('../../Cred');
+// const express = require('express');
+// const router = express.Router();
+// const credentials = require ('../../Cred');
 const {EntityType} = require('../../APIDB/sequelize');
 
-async function runSample(req,res) {
+async function createEntityType(req,res) {
     // [START dialogflow_create_entity_type]
     // Imports the Dialogflow library
     const dialogflow = require('dialogflow');
     // Instantiates clients
-    const entityTypesClient = new dialogflow.EntityTypesClient(credentials.config);
+    const entityTypesClient = new dialogflow.EntityTypesClient(req.userData.dialogFlowCred);
     displayName = req.body.displayName;
     kind = req.body.kind;
     // The path to the agent the created entity type belongs to.
-    const agentPath = entityTypesClient.projectAgentPath(credentials.project_id);
+    const agentPath = entityTypesClient.projectAgentPath(req.userData.project_id);
   
     const createEntityTypeRequest = {
       parent: agentPath,
@@ -39,5 +39,5 @@ async function runSample(req,res) {
 }
 
  module.exports = {
- runSample : runSample 
- } 
+  createEntityType : createEntityType
+ }

@@ -1,6 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const credentials = require ('../../Cred');
+// const express = require('express');
+// const router = express.Router();
+// const credentials = require ('../../Cred');
 const {Intent} = require('../../APIDB/sequelize');
 
 
@@ -19,9 +19,9 @@ async function deleteIntent(req,res) {
     IntentId = results[0].intentId; 
 
 // Instantiates clients
-const intentsClient = new dialogflow.IntentsClient(credentials.config);
+const intentsClient = new dialogflow.IntentsClient(req.userData.dialogFlowCred);
 
-const intentPath = intentsClient.intentPath(credentials.project_id, IntentId);
+const intentPath = intentsClient.intentPath(req.userData.project_id, IntentId);
 
 const request = {name: intentPath};
 

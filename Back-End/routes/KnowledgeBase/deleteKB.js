@@ -1,7 +1,7 @@
-const express = require('express')
-const router  = express.Router()
-//const cors = require('cors')
-const credentials = require ('../../Cred');
+// const express = require('express')
+// const router  = express.Router()
+// //const cors = require('cors')
+// const credentials = require ('../../Cred');
 const {KnowledgeBase} = require('../../APIDB/sequelize');
 //DELETES ONLY THOSE KNOWLEDGE BASES THAT DO NOT HAVE A DOCUMENT
 //SHOWS ERROR: THE KNOWLEDGE BASE HAS A DOCUMENT IN IT. IF YOU STILL WANT TO, AND THE TERMINATES
@@ -24,7 +24,7 @@ async function deleteKnowledgeBase(req,res)
     knowledgeBaseFullName = results[0].knowledgeBaseFullName;
  
     // Instantiate a DialogFlow KnowledgeBasesClient.
-    const client = new dialogflow.KnowledgeBasesClient(credentials.config,credentials.project_id);
+    const client = new dialogflow.KnowledgeBasesClient(req.userData.dialogFlowCred,req.userData.project_id);
     //const knowledgeBaseFullName = 'projects/chatbot-perennial-243513/knowledgeBases/MzQwNjE4NTg2Nzc4MDI5MjYwOA';
 
     const [result] = await client.deleteKnowledgeBase({

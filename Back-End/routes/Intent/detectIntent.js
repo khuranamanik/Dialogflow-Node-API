@@ -3,18 +3,14 @@ const router  = express.Router()
 const credentials = require ('../../Cred.js');
 
 
-async function runSample (req,res) {
+async function detectIntent(req,res) {
 const dialogflow = require('dialogflow');
 const uuid = require('uuid');
 let text = req.body.text; 
-console.log("My token is",req.token);
-// console.log(credentials.config);
-// console.log(credentials.project_id)
-//console.log(config);
 const sessionId = uuid.v4();
 // Create a new session
-const sessionClient = new dialogflow.SessionsClient(credentials.config);
-const sessionPath = sessionClient.sessionPath(credentials.project_id, sessionId);
+const sessionClient = new dialogflow.SessionsClient(req.userData.dialogFlowCred);
+const sessionPath = sessionClient.sessionPath(req.userData.project_id, sessionId);
 // The text query request.
 const request = {
   session: sessionPath,
@@ -48,5 +44,5 @@ res.send(respData);
 }
 
 module.exports = {
-runSample : runSample
+  detectIntent : detectIntent
 }

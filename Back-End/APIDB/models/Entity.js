@@ -45,9 +45,9 @@ module.exports = (sequelize, type) => {
         //   type : type.STRING
         // },
         
-        // Kind:{
-        //     type : type.STRING
-        //   },
+        Kind:{
+            type : type.STRING
+          },
 
           // SessionId: {
           //   type: type.UUID,

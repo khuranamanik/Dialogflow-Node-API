@@ -1,5 +1,5 @@
-const express = require('express')
-const router  = express.Router()
+// const express = require('express')
+// const router  = express.Router()
 const util = require('util');
 const fs = require('fs');
 const {struct} = require('pb-util');
@@ -7,26 +7,25 @@ const pump = require('pump');
 const through2 = require('through2');
 const uuid = require('uuid');
 
-projectId = 'flights-bjrxvg'
+//projectId = 'flights-bjrxvg'
 function detectTextIntent(req, res) {
 
   // [START dialogflow_detect_intent_text]
   // Imports the Dialogflow library
-  const dialogflow = require('dialogflow');
-  let text = req.body.text; 
-  query = text;
+  const dialogflow = require('dialogflow'); 
+  query = req.body.text;
   queries = query;
 
   const sessionId = uuid.v4();
   // Instantiates a session client
-  const sessionClient = new dialogflow.SessionsClient();
+  const sessionClient = new dialogflow.SessionsClient(req.userData.dialogFlowCred);
 
   if (!queries || !queries.length) {
     return;
   }
 
   // The path to identify the agent that owns the created intent.
-  const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+  const sessionPath = sessionClient.sessionPath(req.userData.project_id, sessionId);
   // const logQueryResult = logQueryResult();
   let promise;
 
