@@ -18,7 +18,10 @@ children:[
    canActivate:[AuthGuard]},
    {path:'Intent',component:CreateIntentComponent},
   {path:'profile',component:StudentProfileComponent},
-  {path:'**',component:StudentNotFoundComponent}
+  {path:'knowledgebase',component:StudentNotFoundComponent},
+  {path:'entities',component:StudentNotFoundComponent},
+  {path:'entitiesType',component:StudentNotFoundComponent},
+  {path:'**',component:StudentNotFoundComponent},
 ]
 },
   {path:'**', component: PageNotFoundComponent}

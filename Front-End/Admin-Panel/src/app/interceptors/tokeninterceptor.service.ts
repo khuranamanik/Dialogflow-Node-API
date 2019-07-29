@@ -9,9 +9,10 @@ export class Tokeninterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = sessionStorage.getItem('token');
+    debugger;
     if (token) {
       const newreq = req.clone({
-        headers: req.headers.set("Authorization", token)
+        headers: req.headers.set("token", "Bearers " + token)
       });
 
       return next.handle(newreq);

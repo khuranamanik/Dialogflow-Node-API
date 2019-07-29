@@ -1,0 +1,189 @@
+<form  [formGroup]="createAgent" *ngIf="displayMode == 'create-admin'">
+  <div class="form-body">
+    <div class="card-body">
+      <div class="row p-t-20">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Email</label>
+            <input class="form-control" type="email" required formControlName="email" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Password</label>
+            <input required class="form-control" formControlName="password"  type="password" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group has-success">
+            <label class="control-label">Type</label>
+            <select class="form-control custom-select" required formControlName="roletype">
+              <option value="agent">Agent</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Project Id</label>
+            <input required class="form-control" formControlName="projectId"  type="text" />
+          </div>
+        </div>
+     
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Display Name</label>
+            <input required class="form-control" formControlName="displayName"  type="text" />
+          </div>
+        </div>
+
+        
+      </div>
+      <br />
+      <br />
+      <div class="action-form">
+        <div class="form-group m-b-0 text-center">
+          <button type="submit" name="button" [disabled]="createAgent.invalid" (click)="createAdmin()">Submit</button>
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<form  [formGroup]="createIn" *ngIf="displayMode == 'create-intent'">
+  <div class="form-body">
+    <div class="card-body">
+      <div class="row p-t-20">
+        <!-- <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">ProjectId</label>
+            <input class="form-control" type="text" required formControlName="ProjectId" />
+          </div>
+        </div> -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">displayName</label>
+            <input required class="form-control" formControlName="displayName"  type="text" />
+          </div>
+        </div>       
+      </div>
+      <br />
+      <br />
+      <div class="action-form">
+        <div class="form-group m-b-0 text-center">
+          <button type="submit" name="button" [disabled]="createIn.invalid" (click)="createSubject()">Submit</button>
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="col-md-6" *ngIf="displayMode == 'list-intent'">
+    <table style="border: 1px solid black;" >
+        <th>DisplayName</th>
+        <!-- <th>Delete Intent</th> -->
+        <tr *ngFor="let  intent of intentList.data">
+          <td>{{intent.displayName}}</td>
+          <!-- <td><button (click)="deleteIntent()" >Delete</button></td> -->
+        </tr>               
+      </table>
+      
+</div>
+<!-- <app-knowledgebase [mode]="'create'" *ngIf="displayMode=='knowledgebase-create'"></app-knowledgebase> -->
+<!-- <app-knowledgebase [mode]="'delete'" *ngIf="displayMode=='knowledgebase-delete'"></app-knowledgebase> -->
+<form  [formGroup]="createKnowledgeBase" *ngIf="displayMode=='knowledgebase-create'">
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label class="control-label">Display Name</label>
+      <input required class="form-control" formControlName="displayName"  type="text" />
+    </div>
+
+    <div class="action-form">
+      <div class="form-group m-b-0 text-center">
+        <button type="submit" name="button" [disabled]="createKnowledgeBase.invalid" (click)=" createKb()">Submit</button>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<form  [formGroup]="entitiy" *ngIf="displayMode == 'entities-create'">
+  <div class="form-body">
+    <div class="card-body">
+      <div class="row p-t-20">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Entity Value</label>
+            <input class="form-control" type="text"  formControlName="entityValue" />
+          </div>
+        </div>
+        <!-- <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Synonyms </label>
+            <input required class="form-control" formControlName="synonyms"  type="text" />
+          </div>
+        </div>
+     -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Entity Type Name</label>
+            <input  class="form-control" formControlName="entityTypeName"  type="text" />
+          </div>
+        </div>    
+      </div>
+      <br />
+      <br />
+      <div class="action-form">
+        <div class="form-group m-b-0 text-center">
+          <button  name="button"  [disabled]="entitiy.invalid" (click)="createEntities()">Submit</button>
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<form  [formGroup]="entityType" *ngIf="displayMode == 'entitiesType-create'">
+  <div class="form-body">
+    <div class="card-body">
+      <div class="row p-t-20">
+        <!-- <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">ProjectId</label>
+            <input class="form-control" type="text" required formControlName="ProjectId" />
+          </div>
+        </div> -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">displayName</label>
+            <input required class="form-control" formControlName="displayName"  type="text" />
+          </div>
+        </div>       
+
+      
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="control-label">Kind</label>
+          <input required class="form-control" formControlName="kind"  type="text" />
+        </div>
+      </div>      
+
+
+      </div>
+      <br />
+      <br />
+      <div class="action-form">
+        <div class="form-group m-b-0 text-center">
+          <button type="submit" name="button" [disabled]="entityType.invalid" (click)="createEnType()">Submit</button>
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

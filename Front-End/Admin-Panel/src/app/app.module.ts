@@ -20,6 +20,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ErrorInterceptorService } from './interceptors/error-interceptor.service';
 import { HasPermissionDirective } from './shared/directives/has-permission.directive';
 import { CreateIntentComponent } from './create-intent/create-intent.component';
+import { KnowledgebaseComponent } from './knowledgebase/knowledgebase.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +34,8 @@ import { CreateIntentComponent } from './create-intent/create-intent.component';
     StudentProfileComponent,
     MenuListItemComponent,
     HasPermissionDirective,
-    CreateIntentComponent
+    CreateIntentComponent,
+    KnowledgebaseComponent
   ],
   imports: [
     BrowserModule,

@@ -34,11 +34,13 @@ export class StudentSigninComponent implements OnInit {
 
 
   submitData() {
+    debugger;
     this.studentService.logIn(this.login.value)
       .subscribe(res => {
         this.data = res
         console.log("my response is", res);
         sessionStorage.setItem('token', res.token);
+        debugger;
         sessionStorage.setItem('user', res.user.roletype);
         if (res) {
           this.toastr.success('Login Sucessfully');
