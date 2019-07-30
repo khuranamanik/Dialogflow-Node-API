@@ -12,6 +12,7 @@ async function createIntent(req,res)
   text = req.body.displayName;
   let displayName;
   // Instantiates the Intent Client
+  
   const intentsClient = new dialogflow.IntentsClient(req.userData.dialogFlowCred);
 
   // The path to identify the agent that owns the created intent.

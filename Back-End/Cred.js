@@ -15,7 +15,7 @@ function userData(req, res, next) {
         project_id: projectId,
         dialogFlowCred : {
           credentials: {
-            private_key: results[0].private_key,
+            private_key: results[0].private_key.replace(/\\n/g,'\n'),
             client_email: results[0].client_email
           }
         }
