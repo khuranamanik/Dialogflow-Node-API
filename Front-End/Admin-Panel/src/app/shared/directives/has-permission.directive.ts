@@ -11,7 +11,7 @@ export class HasPermissionDirective {
     private templateRef: TemplateRef<NgIfContext>,	private viewContainer: ViewContainerRef , private studentservice:StudentService) { }
     @Input('appHasPermission') set appHasPermission(condition: string) {  
       const type = sessionStorage.getItem('user');
-      if(type === condition || condition=='all')
+      if(type === condition || condition=='all' )
       {
         this.viewContainer.createEmbeddedView(this.templateRef);
       }

@@ -62,14 +62,14 @@ export class StudentNavComponent {
       disabled: true,
       iconName: "create",
       route: "/company/intents",
-      isOnlyFor:"all",
+      isOnlyFor:"admin",
       children: [
         {
           displayName: "create",
           disabled: false,
           iconName: "remove_red_eye",
           route: "/company/intents/create",
-          isOnlyFor:"all",
+          isOnlyFor:"admin",
           children: []
         },
         {
@@ -77,7 +77,7 @@ export class StudentNavComponent {
           disabled: false,
           iconName: "remove_red_eye",
           route: "/company/intents/list",
-          isOnlyFor:"all",
+          isOnlyFor:"admin",
           children: []
         }
       ]
@@ -87,16 +87,29 @@ export class StudentNavComponent {
       disabled: true,
       iconName: "create",
       route: "/company/knowledgebase",
-      isOnlyFor:"all",
+      isOnlyFor:"admin",
       children: [
         {
           displayName: "Create",
           disabled: false,
           iconName: "remove_red_eye",
           route: "/company/knowledgebase/create",
-          isOnlyFor:"all",
+          isOnlyFor:"admin",
           children: []
         },
+
+        {
+          displayName: "List",
+          disabled: false,
+          iconName: "remove_red_eye",
+          route: "/company/knowledgebase/list",
+          isOnlyFor:"admin",
+          children: []
+        },
+
+
+
+
         // {
         //   displayName: "Delete",
         //   disabled: false,
@@ -115,14 +128,14 @@ export class StudentNavComponent {
       disabled: true,
       iconName: "description",
       route: "/company/entities",
-      isOnlyFor:"all",
+      isOnlyFor:"admin",
       children: [
         {
           displayName: "Create",
           disabled: false,
           iconName: "remove_red_eye",
           route: "/company/entities/create",
-          isOnlyFor:"all",
+          isOnlyFor:"admin",
           children: []
         },
         // {
@@ -140,14 +153,14 @@ export class StudentNavComponent {
       disabled: true,
       iconName: "description",
       route: "/company/entitiesType",
-      isOnlyFor:"all",
+      isOnlyFor:"admin",
       children: [
         {
           displayName: "Create",
           disabled: false,
           iconName: "remove_red_eye",
           route: "/company/entitiesType/create",
-          isOnlyFor:"all",
+          isOnlyFor:"admin",
           children: []
         },
         // {

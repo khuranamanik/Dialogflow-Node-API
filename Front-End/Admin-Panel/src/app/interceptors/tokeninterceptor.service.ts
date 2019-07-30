@@ -12,7 +12,7 @@ export class Tokeninterceptor implements HttpInterceptor {
     debugger;
     if (token) {
       const newreq = req.clone({
-        headers: req.headers.set("token", "Bearers " + token)
+        headers: req.headers.set("authorization", "Bearers " + token)
       });
 
       return next.handle(newreq);

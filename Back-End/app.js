@@ -64,7 +64,7 @@ router.get('/protected', passport.authenticate('jwt', { session: false }), funct
   res.json('Success! You can now see this without a token.');
 });
 
-router.post('/api/agentCreate', authentication.verifyToken, (req, res) => {
+router.post('/api/agentCreate', (req, res) => {
   Agent.create(req.body)
     .then(result => res.json(result));
 })

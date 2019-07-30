@@ -32,7 +32,9 @@ async function createIntent(req,res)
   
   const response = responses[0].name;
   const seperate = response.split ('/');
+  console.log("seperate isssss----",seperate);
   const newOject={"intentId": seperate[4],"projectId":seperate[1],"displayName":req.body.displayName};
+  console.log("-----------------.",seperate[1]);
   // console.log(newOject);
     Intent.create(newOject)
         .then(response => "") 

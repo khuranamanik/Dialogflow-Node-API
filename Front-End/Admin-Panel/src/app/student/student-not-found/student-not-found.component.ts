@@ -21,7 +21,7 @@ export class StudentNotFoundComponent implements OnInit {
   public entitiy: FormGroup;
   public entities: any = [];
   public entityType: FormGroup;
-  public entityTypes:any=[];
+  public entityTypes: any = [];
 
 
   displayMode: string = "";
@@ -48,6 +48,11 @@ export class StudentNotFoundComponent implements OnInit {
         else if (this.router.url.includes("knowledgebase/create")) {
           this.displayMode = "knowledgebase-create";
         }
+
+        else if (this.router.url.includes("knowledgebase/list")) {
+          this.displayMode = "knowledgebase-list";
+        }
+
         else if (this.router.url.includes("entities/create")) {
           this.displayMode = "entities-create";
         }
@@ -74,6 +79,14 @@ export class StudentNotFoundComponent implements OnInit {
     else if (this.router.url.includes("knowledgebase/create")) {
       this.displayMode = "knowledgebase-create";
     }
+
+    else if (this.router.url.includes("knowledgebase/list")) {
+      this.displayMode = "knowledgebase-list";
+    }
+
+
+
+
     else if (this.router.url.includes("entities/create")) {
       this.displayMode = "entities-create";
     }
@@ -94,31 +107,61 @@ export class StudentNotFoundComponent implements OnInit {
       password: [''],
       roletype: [''],
       projectId: [''],
-      displayName: ['']
+      displayName: [''],
+      private_key: [''],
+      client_email: ['']
     });
   }
+
+  get email() {
+    return this.createAgent.get('email');
+  }
+
+
+  get password() {
+    return this.createAgent.get('password');
+  }
+
+  get roletype() {
+    return this.createAgent.get('roletype');
+  }
+
+  get projectId() {
+    return this.createAgent.get('projectId');
+  }
+  get displayName() {
+    return this.createAgent.get('displayName');
+
+  }
+  get  private_key() {
+    return this.createAgent.get('private_key');
+  }
+  
+  get  client_email() {
+    return this.createAgent.get('client_email');
+  }
+  
 
   createEntityType() {
     this.entityType = this.fb.group({
       displayName: [''],
-      kind:[]
+      kind: []
     })
   }
-  createEnType()
-  {
+  createEnType() {
     this.studentService.entityType(this.entityType.value)
-    .subscribe(res => {
-      this.entityTypes = res
-      console.log("my entitity Types aree", res);
-      if (res) {
-        this.toastr.success('Intent  Type Created Sucessfully');
-      }
-      else {
-        this.toastr.error("Error");
-      }
-    }, (err) => {
-      console.log(err);
-    });
+      .subscribe(res => {
+        this.entityTypes = res
+        console.log("my entitity Types aree", res);
+        if (res) {
+          this.toastr.success('Intent  Type Created Sucessfully');
+        }
+        else {
+          this.toastr.error("Error");
+        }
+      }, (err) => {
+        console.log(err);
+      });
 
 
   }
@@ -232,7 +275,7 @@ export class StudentNotFoundComponent implements OnInit {
       })
   }
 
-  
+
 
 
 }
