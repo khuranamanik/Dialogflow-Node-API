@@ -26,6 +26,8 @@ const getKB = require('./routes/KnowledgeBase/getKB.js')
 const getAgent = require('./routes/Agent/getAgent.js')
 const trainAgent = require('./routes/Agent/trainAgent.js')
 const jwt_Decode = require('jwt-decode');
+
+
 //var mytoken = {}
 router.use(bodyParser());
 router.use(function (req, res, next) {

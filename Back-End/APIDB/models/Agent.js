@@ -1,3 +1,5 @@
+
+
 module.exports = (sequelize, type) => {
     return sequelize.define('Agent', {
       projectId: {
@@ -47,5 +49,8 @@ module.exports = (sequelize, type) => {
           field: 'client_email',
           allowNull: false
         },
+          
+      
       })
+
 }
