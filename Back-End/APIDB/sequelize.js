@@ -7,10 +7,11 @@ const ContextModel = require('./models/Context')
 const KnowledgeBaseModel = require('./models/KnowledgeBase')
 const DocumentModel = require('./models/Document')
 const AdminModel = require('./models/admins');
+const bcrypt = require("bcrypt");
 
 
 //check username and password 
-const sequelize = new Sequelize('DialogflowDB', 'root', 'arpan', { 
+const sequelize = new Sequelize('DialogFlowAPI', 'root', 'Arshiya2004', { 
   host: 'localhost',
   dialect: 'mysql',
   pool: {
@@ -39,6 +40,40 @@ Agent.hasMany(Intent, {
       allowNull: false
     }
   })
+  Agent.beforeCreate((Agent, options) => {
+
+    return bcrypt.hash(Agent.password, 10)
+        .then(hash => {
+            Agent.password = hash;
+        })
+        .catch(err => { 
+            throw new Error(); 
+        });
+});
+
+Agent.beforeCreate((Agent, options) => {
+
+  return bcrypt.hash(Agent.private_key, 10)
+      .then(hash => {
+          Agent.private_key= hash;
+      })
+      .catch(err => { 
+          throw new Error(); 
+      });
+});
+
+Agent.beforeCreate((Agent, options) => {
+
+  return bcrypt.hash(Agent.client_email, 10)
+      .then(hash => {
+          Agent.client_email = hash;
+      })
+      .catch(err => { 
+          throw new Error(); 
+      });
+});
+
+
 
   Agent.hasMany(Entity, {
     foreignKey: {
