@@ -1,13 +1,35 @@
-const jsonData = require('./bot-user.json')
-const project_id = jsonData.project_id
-const private_key = jsonData.private_key
-const client_email = jsonData.client_email
-var config = {
-    credentials: {
-            private_key: private_key,
-            client_email: client_email
-    }};
+const {Agent} = require('./APIDB/sequelize')
+const jwt_Decode = require('jwt-decode');
+function userData(req, res, next) {
 
-module.exports = {
-    config: config, project_id: project_id
-}
+    const decoded = jwt_Decode(req.token);
+    const projectId = decoded.project_id;
+    Agent.findAll({
+      where: {
+        projectId: projectId
+      },
+      raw: true
+  
+    }).then(async function (results,err) {
+      req.userData = {
+        project_id: projectId,
+        dialogFlowCred : {
+          credentials: {
+            private_key: results[0].private_key,
+            client_email: results[0].client_email
+          }
+        }
+      }
+      if(err)
+      {
+        res.status(400).send('Please check projectId');
+      }
+      else{
+      next()
+      }
+    });
+  }
+
+  module.exports = {
+      userData : userData
+  }
