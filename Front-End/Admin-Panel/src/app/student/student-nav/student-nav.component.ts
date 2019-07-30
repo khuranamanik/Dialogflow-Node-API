@@ -107,45 +107,6 @@ export class StudentNavComponent {
           children: []
         },
 
-
-
-
-        // {
-        //   displayName: "Delete",
-        //   disabled: false,
-        //   iconName: "remove_red_eye",
-        //   route: "/company/knowledgebase/delete",
-        //   isOnlyFor:"all",
-        //   children: []
-        // },
-
-      ]
-    },
-
-
-    {
-      displayName: "Entities",
-      disabled: true,
-      iconName: "description",
-      route: "/company/entities",
-      isOnlyFor:"admin",
-      children: [
-        {
-          displayName: "Create",
-          disabled: false,
-          iconName: "remove_red_eye",
-          route: "/company/entities/create",
-          isOnlyFor:"admin",
-          children: []
-        },
-        // {
-        //   displayName: "",
-        //   disabled: false,
-        //   iconName: "remove_red_eye",
-        //   route: "/student/viewstasks",
-        //   isOnlyFor:"all",
-        //   children: []
-        // },
       ]
     },
     {
@@ -163,14 +124,26 @@ export class StudentNavComponent {
           isOnlyFor:"admin",
           children: []
         },
-        // {
-        //   displayName: "Delete",
-        //   disabled: false,
-        //   iconName: "remove_red_eye",
-        //   route: "/student/viewtasks",
-        //   children: []
-        // }
+      ]
+    },
 
+
+
+    {
+      displayName: "Entities",
+      disabled: true,
+      iconName: "description",
+      route: "/company/entities",
+      isOnlyFor:"admin",
+      children: [
+        {
+          displayName: "Create",
+          disabled: true,
+          iconName: "remove_red_eye",
+          route: "/company/entities/create",
+          isOnlyFor:"admin",
+          children: []
+        },
       ]
     },
    

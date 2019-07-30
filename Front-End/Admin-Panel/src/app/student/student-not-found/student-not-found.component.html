@@ -12,6 +12,7 @@
               <div *ngIf="email.errors.required">
                 Email is required.
               </div>
+              <div *ngIf="email.errors">Email must be a valid email address</div>
             </div>
 
           </div>
@@ -129,7 +130,14 @@
         <div class="col-md-6">
           <div class="form-group">
             <label class="control-label">displayName</label>
-            <input required class="form-control" formControlName="displayName" type="text" />
+            <input required  id="IntentControls" class="form-control" formControlName="displayName" type="text" />
+
+            <div *ngIf="IntentControls.invalid && (IntentControls.dirty || IntentControls.touched)" class="alert alert-danger">
+              <div *ngIf="IntentControls.errors.required">
+                displayName  is required.
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -148,7 +156,7 @@
 <div class="col-md-6" *ngIf="displayMode == 'list-intent'">
   <table style="border: 1px solid black;">
     <th>DisplayName</th>
-    <!-- <th>Delete Intent</th> -->
+    <th>Delete Intent</th>
     <tr *ngFor="let  intent of intentList.data">
       <td>{{intent.displayName}}</td>
       <!-- <td><button (click)="deleteIntent()" >Delete</button></td> -->
@@ -187,13 +195,7 @@
             <input class="form-control" type="text" formControlName="entityValue" />
           </div>
         </div>
-        <!-- <div class="col-md-6">
-          <div class="form-group">
-            <label class="control-label">Synonyms </label>
-            <input required class="form-control" formControlName="synonyms"  type="text" />
-          </div>
-        </div>
-     -->
+       
         <div class="col-md-6">
           <div class="form-group">
             <label class="control-label">Entity Type Name</label>
