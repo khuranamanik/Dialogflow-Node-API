@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentService } from '../../services/student.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -21,7 +21,7 @@ export class StudentNotFoundComponent implements OnInit {
   public entitiy: FormGroup;
   public entities: any = [];
   public entityType: FormGroup;
-  public entityTypes:any=[];
+  public entityTypes: any = [];
 
 
   displayMode: string = "";
@@ -48,6 +48,10 @@ export class StudentNotFoundComponent implements OnInit {
         else if (this.router.url.includes("knowledgebase/create")) {
           this.displayMode = "knowledgebase-create";
         }
+
+        else if (this.router.url.includes("knowledgebase/list")) {
+          this.displayMode = "knowledgebase-list";
+        }
         else if (this.router.url.includes("entities/create")) {
           this.displayMode = "entities-create";
         }
@@ -60,7 +64,7 @@ export class StudentNotFoundComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getIntentList();
+    //this.getIntentList();
     this.knowledgeBaseForm();
     this.displayMode = this.router.url;
     if (this.router.url.includes("Agent/create")) {
@@ -74,9 +78,15 @@ export class StudentNotFoundComponent implements OnInit {
     else if (this.router.url.includes("knowledgebase/create")) {
       this.displayMode = "knowledgebase-create";
     }
+
+    else if (this.router.url.includes("knowledgebase/list")) {
+      this.displayMode = "knowledgebase-list";
+    }
+
     else if (this.router.url.includes("entities/create")) {
       this.displayMode = "entities-create";
     }
+
     else if (this.router.url.includes("entitiesType/create")) {
       this.displayMode = "entitiesType-create";
     }
@@ -90,40 +100,74 @@ export class StudentNotFoundComponent implements OnInit {
   }
   create() {
     this.createAgent = this.fb.group({
-      email: [''],
+      email: ['',[Validators.required, Validators.email],
+      Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+      ])
+    
+    ],
       password: [''],
       roletype: [''],
       projectId: [''],
-      displayName: ['']
+      displayName: [''],
+      private_key: [''],
+      client_email: ['',[Validators.required, Validators.email]]
     });
   }
+
+  get email() {
+    return this.createAgent.get('email');
+  }
+
+
+  get password() {
+    return this.createAgent.get('password');
+  }
+
+  get roletype() {
+    return this.createAgent.get('roletype');
+  }
+
+  get projectId() {
+    return this.createAgent.get('projectId');
+  }
+  get displayName() {
+    return this.createAgent.get('displayName');
+
+  }
+  get  private_key() {
+    return this.createAgent.get('private_key');
+  }
+  
+  get  client_email() {
+    return this.createAgent.get('client_email');
+  }
+  
 
   createEntityType() {
     this.entityType = this.fb.group({
       displayName: [''],
-      kind:[]
+      kind: []
     })
   }
-  createEnType()
-  {
+  createEnType() {
     this.studentService.entityType(this.entityType.value)
-    .subscribe(res => {
-      this.entityTypes = res
-      console.log("my entitity Types aree", res);
-      if (res) {
-        this.toastr.success('Intent  Type Created Sucessfully');
-      }
-      else {
-        this.toastr.error("Error");
-      }
-    }, (err) => {
-      console.log(err);
-    });
+      .subscribe(res => {
+        this.entityTypes = res
+        console.log("my entitity Types aree", res);
+        if (res) {
+          this.toastr.success('Intent  Type Created Sucessfully');
+        }
+        else {
+          this.toastr.error("Error");
+        }
+      }, (err) => {
+        console.log(err);
+      });
 
 
   }
-
-
 
 
   knowledgeBaseForm() {
@@ -135,7 +179,6 @@ export class StudentNotFoundComponent implements OnInit {
   createEntity() {
     this.entitiy = this.fb.group({
       entityValue: [''],
-      synonyms: [''],
       entityTypeName: ['']
     });
   }
@@ -187,6 +230,11 @@ export class StudentNotFoundComponent implements OnInit {
       displayName: ['']
     })
   }
+  get IntentControls()
+  {
+    return this.createAgent.get('displayName');
+    
+  }
 
   createSubject() {
     this.studentService.createIntent(this.createIn.value)
@@ -232,7 +280,7 @@ export class StudentNotFoundComponent implements OnInit {
       })
   }
 
-  
+
 
 
 }
