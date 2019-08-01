@@ -7,11 +7,10 @@ const ContextModel = require('./models/Context')
 const KnowledgeBaseModel = require('./models/KnowledgeBase')
 const DocumentModel = require('./models/Document')
 const AdminModel = require('./models/admins');
-// const bcrypt = require("bcrypt");
 
 
 //check username and password 
-const sequelize = new Sequelize('DialogFlow', 'root', 'root', {
+const sequelize = new Sequelize('DialogFlowDB', 'root', '123456', { 
   host: 'localhost',
   dialect: 'mysql',
   pool: {
